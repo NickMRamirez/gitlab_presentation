@@ -1,5 +1,7 @@
 # Gitlab Presentation
 
+Demo of using Packer, Terraform, .NET Core, Docker and Kubernetes.
+
 ## Goals:
 
 * Use Terraform to set up a Kubernetes cluster on Azure Container service
