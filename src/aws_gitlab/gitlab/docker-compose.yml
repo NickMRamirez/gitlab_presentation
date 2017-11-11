@@ -1,0 +1,54 @@
+version: "3"
+services:
+
+  gitlab:
+    image: gitlab/gitlab-ce
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "external_url 'http://${VM_PUBLIC_IP}/'"
+      GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: abc123
+
+  dockerrunner:
+    depends_on:
+      - gitlab
+    links:
+      - gitlab
+    image: gitlab/gitlab-runner
+    environment:
+      RUNNER_NAME: 'dockerrunner1'
+      REGISTRATION_TOKEN: 'abc123'
+      CI_SERVER_URL: 'http://gitlab/'
+      RUNNER_EXECUTOR: 'docker'
+      DOCKER_IMAGE: 'microsoft/dotnet'
+      DOCKER_PRIVILEGED: 'true'
+      RUNNER_TAG_LIST: 'docker'
+      REGISTER_LOCKED: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/ubuntu/gitlab/shellrunner_setup.sh:/setup.sh
+    entrypoint: '/bin/bash'
+    command: '/setup.sh'
+
+  shellrunner:
+    depends_on:
+      - gitlab
+    links:
+      - gitlab
+    image: gitlab/gitlab-runner
+    environment:
+      RUNNER_NAME: 'shellrunner1'
+      REGISTRATION_TOKEN: abc123
+      CI_SERVER_URL: 'http://gitlab/'
+      RUNNER_EXECUTOR: shell
+      RUNNER_SHELL: bash
+      DOCKER_PRIVILEGED: 'true'
+      RUNNER_TAG_LIST: 'shell'
+      REGISTER_LOCKED: 'false'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/docker/docker:/usr/bin/docker:ro
+      - /home/ubuntu/gitlab/shellrunner_setup.sh:/setup.sh
+    entrypoint: '/bin/bash'
+    command: '/setup.sh'

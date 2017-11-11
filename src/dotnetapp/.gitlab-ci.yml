@@ -1,0 +1,27 @@
+stages:
+  - build
+  - package
+
+build:
+  stage: build
+  image: microsoft/dotnet
+  script:
+    - dotnet clean
+    - dotnet restore
+    - dotnet build
+    - dotnet publish -o output/
+  tags:
+    - docker
+  artifacts:
+    paths: 
+      - output/
+    expire_in: 1 day
+
+package:
+  stage: package
+  dependencies:
+    - build
+  script:
+    - docker build -t nramirez/ectoplasm .
+  tags:
+    - shell
