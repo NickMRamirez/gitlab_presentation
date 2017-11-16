@@ -13,13 +13,11 @@ services:
   dockerrunner:
     depends_on:
       - gitlab
-    links:
-      - gitlab
     image: gitlab/gitlab-runner
     environment:
       RUNNER_NAME: 'dockerrunner1'
       REGISTRATION_TOKEN: 'abc123'
-      CI_SERVER_URL: 'http://gitlab/'
+      CI_SERVER_URL: 'http://${VM_PUBLIC_IP}/'
       RUNNER_EXECUTOR: 'docker'
       DOCKER_IMAGE: 'microsoft/dotnet'
       DOCKER_PRIVILEGED: 'true'
@@ -34,13 +32,11 @@ services:
   shellrunner:
     depends_on:
       - gitlab
-    links:
-      - gitlab
     image: gitlab/gitlab-runner
     environment:
       RUNNER_NAME: 'shellrunner1'
       REGISTRATION_TOKEN: abc123
-      CI_SERVER_URL: 'http://gitlab/'
+      CI_SERVER_URL: 'http://${VM_PUBLIC_IP}/'
       RUNNER_EXECUTOR: shell
       RUNNER_SHELL: bash
       DOCKER_PRIVILEGED: 'true'
@@ -48,7 +44,7 @@ services:
       REGISTER_LOCKED: 'false'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /opt/docker/docker:/usr/bin/docker:ro
+      - /opt/docker/docker:/usr/bin/docker
       - /home/ubuntu/gitlab/shellrunner_setup.sh:/setup.sh
     entrypoint: '/bin/bash'
     command: '/setup.sh'

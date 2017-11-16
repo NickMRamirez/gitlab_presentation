@@ -22,6 +22,8 @@ package:
   dependencies:
     - build
   script:
-    - docker build -t nramirez/ectoplasm .
+    - docker login -u="nickmramirez+gitlabci" -p="KOPD07R4QEAJYLHR8M2O45SY6U4LK1YGHB7H9SXD6UST1M5IY6ZT6PB2B1M9BJII" quay.io
+    - docker build -t quay.io/nickmramirez/ectoplasm:latest .
+    - docker push quay.io/nickmramirez/ectoplasm:latest
   tags:
     - shell
