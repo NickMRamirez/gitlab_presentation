@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ectoplasm-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ectoplasm # must match template.metadata.labels
+  template:
+    metadata:
+      labels:
+        app: ectoplasm
+    spec:
+      containers:
+        - name: ectoplasm
+          image: quay.io/nickmramirez/ectoplasm:latest
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ectoplasm-service
+spec:
+  selector:
+    app: ectoplasm
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+  

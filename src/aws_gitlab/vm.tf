@@ -4,6 +4,9 @@ variable "region" {}
 variable "ssh_keypair_name" {}
 variable "ami_name" {}
 variable "ami_owner" {}
+variable "az_service_principal_client_id" {}
+variable "az_service_principal_client_secret" {}
+variable "az_tenant_id" {}
 
 provider "aws" {
   access_key =  "${var.access_key}"
@@ -99,9 +102,14 @@ resource "aws_instance" "gitlab_server" {
     destination = "/home/ubuntu"
   }
 
+  provisioner "file" {
+    source = "./provision.sh"
+    destination = "/home/ubuntu/provision.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "cd /home/ubuntu/gitlab; export VM_PUBLIC_IP=\"${self.public_ip}\"; sudo -E docker-compose up -d; echo \"Gitlab URL: http://$VM_PUBLIC_IP\""
+      "sudo bash /home/ubuntu/provision.sh \"${self.public_ip}\" \"${var.az_service_principal_client_id}\" \"${var.az_service_principal_client_secret}\" \"${var.az_tenant_id}\""
     ]
   }
 }

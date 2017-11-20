@@ -42,9 +42,14 @@ services:
       DOCKER_PRIVILEGED: 'true'
       RUNNER_TAG_LIST: 'shell'
       REGISTER_LOCKED: 'false'
+      AZ_SERVICE_PRINCIPAL_CLIENT_ID: '${AZ_SERVICE_PRINCIPAL_CLIENT_ID}'
+      AZ_SERVICE_PRINCIPAL_CLIENT_SECRET: '${AZ_SERVICE_PRINCIPAL_CLIENT_SECRET}'
+      AZ_TENANT_ID: '${AZ_TENANT_ID}'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/docker/docker:/usr/bin/docker
       - /home/ubuntu/gitlab/shellrunner_setup.sh:/setup.sh
+      - /usr/bin/az:/usr/bin/az
+      - /user/local/bin/kubectl:/usr/local/bin/kubectl
     entrypoint: '/bin/bash'
     command: '/setup.sh'
