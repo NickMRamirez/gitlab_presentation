@@ -73,12 +73,15 @@ aws ec2 import-key-pair --key-name gitlab-example --public-key-material "$pub_ke
 3. Set up the required Terraform variables by going into the `src/aws_gitlab` folder and adding a file called `terraform.tfvars`. It should have these variables in it:
 
 ```
-access_key = "YOUR_AWS_ACCESS_KEY"
-secret_key = "YOUR_AWS_SECRET_KEY"
-region = "us-east-2"
-ssh_keypair_name = "YOUR_KEYPAIR_NAME"
-ami_name = "YOUR_AMI_NAME"
-ami_owner = "YOUR_AMI_OWNER"
+access_key                         = "YOUR_AWS_ACCESS_KEY"
+secret_key                         = "YOUR_AWS_SECRET_KEY"
+region                             = "us-east-2"
+ssh_keypair_name                   = "YOUR_KEYPAIR_NAME"
+ami_name                           = "YOUR_AMI_NAME"
+ami_owner                          = "YOUR_AMI_OWNER"
+az_service_principal_client_id     = "YOUR_AZURE_CLIENT_ID"
+az_service_principal_client_secret = "YOUR_AZURE_CLIENT_SECRET"
+az_tenant_id                       = "YOUR_AZURE_TENANT_ID"
 ```
 
 4. Create the VM:
