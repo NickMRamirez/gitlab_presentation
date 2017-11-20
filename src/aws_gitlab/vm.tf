@@ -98,6 +98,11 @@ resource "aws_instance" "gitlab_server" {
   }
 
   provisioner "file" {
+    source = "../example_ssh_keypairs/ssh_private_key.pem"
+    destination = "/home/ubuntu/.ssh/id_rsa"
+  }
+
+  provisioner "file" {
     source = "./gitlab"
     destination = "/home/ubuntu"
   }

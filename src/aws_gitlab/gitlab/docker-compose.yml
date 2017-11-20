@@ -50,6 +50,8 @@ services:
       - /opt/docker/docker:/usr/bin/docker
       - /home/ubuntu/gitlab/shellrunner_setup.sh:/setup.sh
       - /usr/bin/az:/usr/bin/az
-      - /user/local/bin/kubectl:/usr/local/bin/kubectl
+      - /opt/az:/opt/az
+      - /usr/local/bin/kubectl:/usr/local/bin/kubectl
+      - /home/ubuntu/.ssh/id_rsa:/home/gitlab-runner/.ssh/id_rsa
     entrypoint: '/bin/bash'
     command: '/setup.sh'
